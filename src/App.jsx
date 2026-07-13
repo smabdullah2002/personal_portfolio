@@ -9,32 +9,53 @@ function App() {
 
   const projects = [
     {
-      title: 'Onkur',
-      description: 'Personal plant-care AI based app using React and FastAPI',
-      stack: ['React', 'Tailwind', 'FastAPI', 'Supabase'],
-      link: 'https://onkur.netlify.app/'
+      title: 'BehaviorIQ',
+      description: 'AI-Powered Behavioral Commerce Intelligence Platform. FastAPI microservice that scores live session intent, predicts RFM-based churn, and provides hybrid semantic search with intent-aware reranking.',
+      stack: ['FastAPI', 'Python', 'Pinecone', 'PostgreSQL'],
+      link: ''
     },
     {
       title: 'Ember',
-      description: 'AI based mental Health Companion- built a full stack AI-powered mental health support platform.',
-      stack: ['React','Tailwind', 'FastAPI', 'Supabase'],
-      link: 'https://quiz-d7129dioh-abdullah-warraich-chs-projects.vercel.app/'
+      description: 'AI Mental Health Companion. Full-stack AI mental health support platform integrating Hugging Face toxicity detection models with React frontend and FastAPI backend.',
+      stack: ['React', 'FastAPI', 'Supabase', 'Hugging Face'],
+      link: 'https://embermentalhealthcompanion.netlify.app/'
     },
     {
-      title: 'Expense Tracker Application',
-      description: 'Built a Python-based expense tracker using FastAPI and SQLite to track daily expenses, generate reports.',
-      stack: ['Python', 'FastAPI', 'SQLite'],
+      title: 'Onkur',
+      description: 'AI Plant-Care App with AI-driven daily care routines, weather-based recommendations, and image-based plant health diagnostics via Plant.id API.',
+      stack: ['React', 'FastAPI', 'AI/ML'],
+      link: 'https://onkur.netlify.app/'
+    },
+    {
+      title: 'Universal Web Scraper & RAG Chatbot',
+      description: 'Production-grade web crawler using Crawlee + Playwright for dynamic site traversal. Full RAG pipeline: LangChain chunking, sentence-transformers embeddings, Pinecone vector store, Gemini LLM generation.',
+      stack: ['Crawlee', 'Playwright', 'LangChain', 'Gemini', 'Pinecone'],
+      link: ''
+    },
+    {
+      title: 'Personal Blog Platform',
+      description: 'Blog platform with full CRUD, user authentication, and a responsive UI. Designed and implemented the REST API and data layer end-to-end.',
+      stack: ['FastAPI', 'Supabase', 'REST API'],
       link: ''
     }
   ]
 
   const skills = [
-    'React JS',
     'Python',
-    'Fastapi',
+    'JavaScript (ES6+)',
+    'C++',
+    'FastAPI',
+    'React',
+    'Next.js',
+    'Django',
+    'PostgreSQL',
+    'MySQL',
+    'SQLite',
     'Supabase',
-    'Tailwind CSS',
-    'Git & GitHub'
+    'Pinecone',
+    'Docker',
+    'Git & GitHub',
+    'LangChain'
   ]
 
   const renderStackedTitle = (text) => {
@@ -152,6 +173,7 @@ function App() {
           <a className={activeSection === 'projects' ? 'active' : ''} href="#projects">Projects</a>
           <a className={activeSection === 'experience' ? 'active' : ''} href="#experience">Experience</a>
           <a className={activeSection === 'skills' ? 'active' : ''} href="#skills">Skills</a>
+          <a className={activeSection === 'education' ? 'active' : ''} href="#education">Education</a>
           <a className={activeSection === 'cv' ? 'active' : ''} href="#cv">CV</a>
           <a className={activeSection === 'contact' ? 'active' : ''} href="#contact">Contact</a>
         </nav>
@@ -226,21 +248,23 @@ function App() {
           <div className="timeline">
             <article className="timeline-item reveal reveal-right" data-reveal style={{ '--delay': '70ms' }}>
               <div>
-                <h3>Ran Tech - Co-Founder</h3>
+                <h3>Full-Stack Developer — Gudam (ICT Division Project)</h3>
                 <p>
-                  Currently building websites with my friends through our tech agency, Ran Tech.
-                  We create modern, responsive websites tailored for client businesses.
+                  Built an ML microservice for behavioral commerce intelligence: session intent scoring,
+                  RFM-based churn prediction, user behavioral vectors, and hybrid semantic search with
+                  intent-aware reranking.
                 </p>
               </div>
-              <span>Present</span>
+              <span>2024 – Present</span>
             </article>
 
             <article className="timeline-item reveal reveal-left" data-reveal style={{ '--delay': '130ms' }}>
               <div>
-                <h3>Client Website Delivery</h3>
+                <h3>RAG-Powered AI Commerce Assistant</h3>
                 <p>
-                  At Ran Tech, we handle full website delivery from planning and design to development,
-                  revisions, and final deployment.
+                  Integrated a RAG-powered AI commerce assistant using Pinecone as the vector store
+                  and Hugging Face embeddings for semantic retrieval. Designed the full FastAPI service
+                  architecture from schema to deployment.
                 </p>
               </div>
               <span>Ongoing</span>
@@ -265,6 +289,26 @@ function App() {
                 {skill}
               </div>
             ))}
+          </div>
+        </section>
+
+        <section id="education" className="section reveal reveal-up" data-reveal>
+          <div className="section-head reveal reveal-right" data-reveal>
+            <p className="eyebrow">Academic</p>
+            <h2 className="title-stack">{renderStackedTitle('Education')}</h2>
+          </div>
+
+          <div className="timeline">
+            <article className="timeline-item reveal reveal-right" data-reveal style={{ '--delay': '70ms' }}>
+              <div>
+                <h3>B.Sc. in Information and Communication Technology</h3>
+                <p>
+                  Institute of Information Technology, Jahangirnagar University.
+                  Third Year · 5th Semester.
+                </p>
+              </div>
+              <span>CGPA: 3.82</span>
+            </article>
           </div>
         </section>
 
