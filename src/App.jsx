@@ -10,50 +10,60 @@ function App() {
   const projects = [
     {
       title: 'BehaviorIQ',
-      description: 'AI-Powered Behavioral Commerce Intelligence Platform. FastAPI microservice that scores live session intent, predicts RFM-based churn, and provides hybrid semantic search with intent-aware reranking.',
+      description:
+        'E-commerce platforms treat every visitor the same. Built a FastAPI microservice that scores live session intent (0–100) from browsing signals, predicts RFM-based churn, builds behavioral vectors for hybrid intent-aware search, and ships a RAG-powered AI assistant so owners can query their commerce data in plain English.',
       stack: ['FastAPI', 'Python', 'Pinecone', 'PostgreSQL'],
-      link: ''
+      links: [{ label: 'GitHub', url: 'https://github.com/smabdullah2002/behavioriq-ml-service.git' }]
     },
     {
       title: 'Ember',
-      description: 'AI Mental Health Companion. Full-stack AI mental health support platform integrating Hugging Face toxicity detection models with React frontend and FastAPI backend.',
+      description:
+        'Full-stack AI mental health support platform integrating Hugging Face toxicity detection models with a React frontend and FastAPI backend. Supabase handles persistent user data and authentication.',
       stack: ['React', 'FastAPI', 'Supabase', 'Hugging Face'],
-      link: 'https://embermentalhealthcompanion.netlify.app/'
+      links: [
+        { label: 'Live', url: 'https://ember-mentalhealth-companion.netlify.app/' },
+        { label: 'GitHub', url: 'https://github.com/smabdullah2002/Ember' }
+      ]
     },
     {
       title: 'Onkur',
-      description: 'AI Plant-Care App with AI-driven daily care routines, weather-based recommendations, and image-based plant health diagnostics via Plant.id API.',
+      description:
+        'Personal plant-care application with AI-driven daily care routines, weather-based recommendations, and image-based plant health diagnostics via Plant.id API.',
       stack: ['React', 'FastAPI', 'AI/ML'],
-      link: 'https://onkur.netlify.app/'
+      links: [
+        { label: 'Live', url: 'https://onkur.netlify.app/' },
+        { label: 'GitHub', url: 'https://github.com/smabdullah2002/onkur.git' }
+      ]
     },
     {
       title: 'Universal Web Scraper & RAG Chatbot',
-      description: 'Production-grade web crawler using Crawlee + Playwright for dynamic site traversal. Full RAG pipeline: LangChain chunking, sentence-transformers embeddings, Pinecone vector store, Gemini LLM generation.',
+      description:
+        'Production-grade web crawler using Crawlee + Playwright for dynamic site traversal and Trafilatura for clean extraction. Full RAG pipeline: LangChain chunking → sentence-transformers embeddings → Pinecone vector store → Gemini LLM generation. Handles arbitrary URLs with natural language querying.',
       stack: ['Crawlee', 'Playwright', 'LangChain', 'Gemini', 'Pinecone'],
-      link: ''
+      links: [{ label: 'GitHub', url: 'https://github.com/smabdullah2002/ran_gpt' }]
     },
     {
       title: 'Personal Blog Platform',
-      description: 'Blog platform with full CRUD, user authentication, and a responsive UI. Designed and implemented the REST API and data layer end-to-end.',
+      description:
+        'Blog platform with full CRUD, user authentication, and a responsive UI. Designed and implemented the REST API and data layer end-to-end.',
       stack: ['FastAPI', 'Supabase', 'REST API'],
-      link: ''
+      links: [
+        { label: 'Live', url: 'https://blog.smabdullah.dev/' },
+        { label: 'GitHub', url: 'https://github.com/smabdullah2002/sma-blog' }
+      ]
     }
   ]
 
-  const skills = [
-    'Python',
-    'JavaScript (ES6+)',
-    'C++',
-    'FastAPI',
-    'React',
-    'Next.js',
-    'Django',
-    'PostgreSQL',
-    'Supabase',
-    'Pinecone',
-    'Docker',
-    'Git & GitHub',
-    'LangChain'
+  const skillGroups = [
+    { label: 'Languages', items: ['Python', 'JavaScript (ES6+)', 'C++', 'HTML', 'CSS'] },
+    { label: 'Frameworks', items: ['FastAPI', 'React', 'Django'] },
+    { label: 'Databases', items: ['PostgreSQL', 'Supabase', 'MongoDB', 'Pinecone'] },
+    { label: 'Tools & Platforms', items: ['AWS', 'Git/GitHub', 'Docker', 'Postman', 'REST API', 'pgAdmin', 'Crawlee', 'Playwright', 'Selenium', 'LangChain', 'n8n'] },
+    { label: 'Specialties', items: ['Python Backend Development', 'REST API Development', 'FastAPI', 'AI Engineering', 'LLM Integration', 'RAG Systems', 'Web Scraping & Data Extraction', 'Cloud Deployment & AWS', 'CI/CD & DevOps'] }
+  ]
+
+  const achievements = [
+    'Prompt Engineering Competition by AgentX — 8th Place'
   ]
 
   const renderStackedTitle = (text) => {
@@ -169,9 +179,9 @@ function App() {
         <a className="brand" href="#home">Abdullah</a>
         <nav className="menu">
           <a className={activeSection === 'projects' ? 'active' : ''} href="#projects">Projects</a>
-          <a className={activeSection === 'experience' ? 'active' : ''} href="#experience">Experience</a>
           <a className={activeSection === 'skills' ? 'active' : ''} href="#skills">Skills</a>
           <a className={activeSection === 'education' ? 'active' : ''} href="#education">Education</a>
+          <a className={activeSection === 'achievements' ? 'active' : ''} href="#achievements">Achievements</a>
           <a className={activeSection === 'cv' ? 'active' : ''} href="#cv">CV</a>
           <a className={activeSection === 'contact' ? 'active' : ''} href="#contact">Contact</a>
         </nav>
@@ -179,11 +189,12 @@ function App() {
 
       <main>
         <section id="home" className="hero section reveal reveal-zoom" data-reveal>
+          <p className="hero-name">S.M. Abdullah</p>
           <h1 className="title-stack hero-title">{renderStackedTitle('Fullstack Developer')}</h1>
-          <p className="hero-subtitle">Building clean, responsive products that people love to use.</p>
+          <p className="hero-subtitle">Backend-focused full-stack developer building modern web apps, AI platforms &amp; real-time systems.</p>
           <p className="lead">
-            I design and develop modern web experiences using React and Fastapi best practices.
-            I care about clarity, performance, and detail from concept to deployment.
+            Proficient in FastAPI, React, PostgreSQL, and vector databases, with expertise in REST API
+            development, authentication, embeddings, semantic search, and cloud deployment.
           </p>
 
           <div className="hero-cta">
@@ -195,17 +206,16 @@ function App() {
 
           <div className="stats">
             <article>
-              <h3>6+</h3>
-              <p>Month Experience</p>
-              <a href="https://rantechbd.netlify.app/" target="_blank" rel="noreferrer">Ran Tech Agency</a>
+              <h3>5</h3>
+              <p>Featured Projects</p>
             </article>
             <article>
-              <h3>3+</h3>
-              <p>Projects Completed</p>
+              <h3>3.82</h3>
+              <p>B.Sc. CGPA</p>
             </article>
             <article>
-              <h3>2+</h3>
-              <p>Clients</p>
+              <h3>8th</h3>
+              <p>Prompt Eng. Comp. — AgentX</p>
             </article>
           </div>
         </section>
@@ -231,42 +241,35 @@ function App() {
                     <span key={item}>{item}</span>
                   ))}
                 </div>
-                <a href={project.link} target="_blank" rel="noreferrer">Open Project</a>
+                <div className="card-links">
+                  {project.links.map((link) => (
+                    <a key={link.label} href={link.url} target="_blank" rel="noreferrer">{link.label}</a>
+                  ))}
+                </div>
               </article>
             ))}
           </div>
         </section>
 
-        <section id="experience" className="section reveal reveal-up" data-reveal>
+        <section id="achievements" className="section reveal reveal-up" data-reveal>
           <div className="section-head reveal reveal-right" data-reveal>
-            <p className="eyebrow">Career</p>
-            <h2 className="title-stack">{renderStackedTitle('Relevant Experience')}</h2>
+            <p className="eyebrow">Recognition</p>
+            <h2 className="title-stack">{renderStackedTitle('Achievements')}</h2>
           </div>
 
           <div className="timeline">
-            <article className="timeline-item reveal reveal-right" data-reveal style={{ '--delay': '70ms' }}>
-              <div>
-                <h3>Full-Stack Developer — Gudam (ICT Division Project)</h3>
-                <p>
-                  Built an ML microservice for behavioral commerce intelligence: session intent scoring,
-                  RFM-based churn prediction, user behavioral vectors, and hybrid semantic search with
-                  intent-aware reranking.
-                </p>
-              </div>
-              <span>2024 – Present</span>
-            </article>
-
-            <article className="timeline-item reveal reveal-left" data-reveal style={{ '--delay': '130ms' }}>
-              <div>
-                <h3>RAG-Powered AI Commerce Assistant</h3>
-                <p>
-                  Integrated a RAG-powered AI commerce assistant using Pinecone as the vector store
-                  and Hugging Face embeddings for semantic retrieval. Designed the full FastAPI service
-                  architecture from schema to deployment.
-                </p>
-              </div>
-              <span>Ongoing</span>
-            </article>
+            {achievements.map((item, index) => (
+              <article
+                className="timeline-item reveal reveal-right"
+                data-reveal
+                style={{ '--delay': `${70 + index * 60}ms` }}
+                key={item}
+              >
+                <div>
+                  <h3>{item}</h3>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -276,17 +279,33 @@ function App() {
             <h2 className="title-stack">{renderStackedTitle('Technical Skills')}</h2>
           </div>
 
-          <div className="skills-grid">
-            {skills.map((skill, index) => (
-              <div
-                className="skill-chip reveal reveal-pop"
-                data-reveal
-                style={{ '--delay': `${index * 50}ms` }}
-                key={skill}
-              >
-                {skill}
+          {skillGroups.map((group, groupIndex) => (
+            <div className="skill-group" key={group.label}>
+              <h3 className="skill-group-label">{group.label}</h3>
+              <div className="skills-grid">
+                {group.items.map((skill, index) => (
+                  <div
+                    className="skill-chip reveal reveal-pop"
+                    data-reveal
+                    style={{ '--delay': `${(groupIndex * 200) + (index * 40)}ms` }}
+                    key={skill}
+                  >
+                    {skill}
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+          ))}
+
+          <div className="soft-skills reveal reveal-up" data-reveal>
+            <h3 className="skill-group-label">Soft Skills</h3>
+            <div className="tags">
+              <span>Problem-Solving</span>
+              <span>Critical Thinking</span>
+              <span>Quick Learner</span>
+              <span>Adaptability</span>
+              <span>Team Collaboration</span>
+            </div>
           </div>
         </section>
 
@@ -301,8 +320,7 @@ function App() {
               <div>
                 <h3>B.Sc. in Information and Communication Technology</h3>
                 <p>
-                  Institute of Information Technology, Jahangirnagar University.
-                  Third Year · 5th Semester.
+                  Institute of Information Technology, Jahangirnagar University, Savar.
                 </p>
               </div>
               <span>CGPA: 3.82</span>
@@ -337,7 +355,8 @@ function App() {
           <div className="contact-links reveal reveal-zoom" data-reveal style={{ '--delay': '120ms' }}>
             <a href="https://github.com/smabdullah2002" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://www.linkedin.com/in/sheikh-muhammad-abdullah-a384aa284/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="mailto: sheikhmuhammad2002@gmail.com">sheikhmuhammad2002@gmail.com</a>
+            <a href="mailto:sheikhmuhammad2002@gmail.com">sheikhmuhammad2002@gmail.com</a>
+            <a href="tel:+8801884173052">+8801884173052</a>
             <a
               className="whatsapp-btn"
               href="https://wa.me/8801884173052?text=Hello%20Abdullah%2C%20I%20want%20to%20discuss%20a%20website%20project."
