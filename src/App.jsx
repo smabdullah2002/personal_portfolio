@@ -11,6 +11,7 @@ import {
 	HeartHandshake,
 	Layers,
 	Mail,
+	Menu,
 	MessageCircle,
 	Phone,
 	PenTool,
@@ -21,7 +22,8 @@ import {
 	Users,
 	Wrench,
 	BrainCircuit,
-	Trophy
+	Trophy,
+	X
 } from 'lucide-react'
 import './App.css'
 
@@ -355,6 +357,7 @@ const DEFAULT_BLOG_POSTS = [
 function App() {
 	const cvUrl = 'S.M._Abdullah.pdf'
 	const [activeSection, setActiveSection] = useState('home')
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
 	const projects = [
 		{
@@ -669,31 +672,112 @@ function App() {
 		}
 	}, [])
 
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.innerWidth >= 768) {
+				setMobileMenuOpen(false)
+			}
+		}
+
+		const handleKeyDown = (e) => {
+			if (e.key === 'Escape') {
+				setMobileMenuOpen(false)
+			}
+		}
+
+		window.addEventListener('resize', handleResize)
+		window.addEventListener('keydown', handleKeyDown)
+
+		return () => {
+			window.removeEventListener('resize', handleResize)
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [])
+
 	return (
 		<div className="min-h-screen">
 			<div className="mx-auto max-w-6xl px-4">
-				<header className="sticky top-3 z-50 mt-4 flex flex-wrap items-center justify-between gap-3 rounded-full border-2 border-foreground bg-card px-4 py-2.5 shadow-pop">
-					<a href="#home" className="flex items-center gap-2.5">
-						<span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-foreground bg-accent font-heading text-sm font-extrabold text-accent-foreground">
-							A
-						</span>
-						<span className="font-heading text-lg font-extrabold">S.M. Abdullah</span>
-					</a>
-					<nav className="flex flex-wrap items-center gap-1 text-sm font-semibold">
-						{navItems.map(([id, label]) => (
-							<a
-								key={id}
-								href={`#${id}`}
-								className={`rounded-full border-2 px-3 py-1.5 transition-colors duration-200 ${
-									activeSection === id
-										? 'border-foreground bg-tertiary text-foreground'
-										: 'border-transparent text-muted-foreground hover:border-foreground hover:bg-tertiary/60 hover:text-foreground'
-								}`}
-							>
-								{label}
-							</a>
-						))}
-					</nav>
+				<header className="sticky top-3 z-50 mt-4 rounded-full border-2 border-foreground bg-card px-4 py-2.5 shadow-pop">
+					<div className="flex items-center justify-between">
+						<a
+							href="#home"
+							className="flex items-center gap-2.5"
+							onClick={() => setMobileMenuOpen(false)}
+						>
+							<span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-foreground bg-accent font-heading text-sm font-extrabold text-accent-foreground shadow-sm">
+								A
+							</span>
+							<span className="font-heading text-lg font-extrabold tracking-tight">S.M. Abdullah</span>
+						</a>
+
+						{/* Desktop Navigation */}
+						<nav className="hidden items-center gap-1 text-sm font-semibold md:flex">
+							{navItems.map(([id, label]) => (
+								<a
+									key={id}
+									href={`#${id}`}
+									className={`rounded-full border-2 px-3 py-1.5 transition-all duration-200 ${
+										activeSection === id
+											? 'border-foreground bg-tertiary text-foreground shadow-sm'
+											: 'border-transparent text-muted-foreground hover:border-foreground hover:bg-tertiary/60 hover:text-foreground'
+									}`}
+								>
+									{label}
+								</a>
+							))}
+						</nav>
+
+						{/* Mobile Menu Hamburger Button */}
+						<button
+							type="button"
+							onClick={() => setMobileMenuOpen((prev) => !prev)}
+							aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+							aria-expanded={mobileMenuOpen}
+							className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-foreground bg-tertiary text-foreground shadow-pop transition-transform duration-200 active:scale-95 md:hidden"
+						>
+							{mobileMenuOpen ? <X size={18} strokeWidth={2.5} /> : <Menu size={18} strokeWidth={2.5} />}
+						</button>
+					</div>
+
+					{/* Mobile Menu Dropdown */}
+					{mobileMenuOpen && (
+						<div className="absolute left-0 right-0 top-full mt-2 rounded-2xl border-2 border-foreground bg-card p-4 shadow-pop md:hidden">
+							<nav className="flex flex-col gap-1.5">
+								{navItems.map(([id, label]) => {
+									const isActive = activeSection === id
+									return (
+										<a
+											key={id}
+											href={`#${id}`}
+											onClick={() => setMobileMenuOpen(false)}
+											className={`flex items-center justify-between rounded-xl border-2 px-4 py-2.5 font-heading text-sm font-bold transition-all ${
+												isActive
+													? 'border-foreground bg-tertiary text-foreground shadow-pop'
+													: 'border-transparent text-muted-foreground hover:border-foreground hover:bg-tertiary/40 hover:text-foreground'
+											}`}
+										>
+											<span>{label}</span>
+											{isActive && (
+												<span className="h-2 w-2 rounded-full border border-foreground bg-accent" />
+											)}
+										</a>
+									)
+								})}
+							</nav>
+
+							<div className="mt-3 border-t-2 border-foreground/10 pt-3">
+								<a
+									href={cvUrl}
+									download
+									onClick={() => setMobileMenuOpen(false)}
+									className="flex items-center justify-center gap-2 rounded-xl border-2 border-foreground bg-accent px-4 py-2.5 font-heading text-sm font-bold text-accent-foreground shadow-pop active:translate-y-0.5"
+								>
+									<Download size={16} strokeWidth={2.5} />
+									<span>Download CV</span>
+								</a>
+							</div>
+						</div>
+					)}
 				</header>
 
 				<main>
@@ -760,14 +844,10 @@ function App() {
 							</div>
 						</div>
 
-						<div className="relative mt-10 grid gap-4 sm:grid-cols-3">
+						<div className="relative mt-10 grid gap-4 sm:grid-cols-2">
 							<article className="rounded-md border-2 border-foreground bg-card p-4 shadow-card-violet">
 								<h3 className="font-heading text-3xl font-extrabold text-accent">5</h3>
 								<p className="text-sm font-semibold text-muted-foreground">Featured Projects</p>
-							</article>
-							<article className="rounded-md border-2 border-foreground bg-card p-4 shadow-card-pink">
-								<h3 className="font-heading text-3xl font-extrabold text-secondary">3.82</h3>
-								<p className="text-sm font-semibold text-muted-foreground">B.Sc. CGPA</p>
 							</article>
 							<article className="rounded-md border-2 border-foreground bg-card p-4 shadow-card-amber">
 								<h3 className="font-heading text-3xl font-extrabold">8th</h3>
