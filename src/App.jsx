@@ -333,6 +333,25 @@ function SkillDeck({ groups, chipBgs }) {
 	)
 }
 
+const DEFAULT_BLOG_POSTS = [
+	{
+		title: 'Designing a Fully Automated ML Pipeline Architecture',
+		date: '2026-09-16',
+		excerpt:
+			'A deep dive into building production-ready automated ML pipelines: train/test splitting, imputation, encoding, outlier handling, and MLOps deployment.',
+		url: 'https://blog.smabdullah.dev/post/designing-a-fully-automated-ml-pipeline-architecture',
+		image: 'https://res.cloudinary.com/dcirwggdc/image/upload/v1789573468/sma-blog/bwq9qmlm7vnnhwqwre7x.jpg'
+	},
+	{
+		title: 'LLM Latency Optimization',
+		date: '2026-07-29',
+		excerpt:
+			'Practical strategies for cutting LLM latency: token budgeting, streaming responses, prompt caching, and intelligent model routing.',
+		url: 'https://blog.smabdullah.dev/post/llm-latency-optimization-a-practical-guide-for-api-based-applications',
+		image: 'https://res.cloudinary.com/dcirwggdc/image/upload/v1785349306/sma-blog/p2lundvgcbe41ubwkm82.jpg'
+	}
+]
+
 function App() {
 	const cvUrl = 'S.M._Abdullah.pdf'
 	const [activeSection, setActiveSection] = useState('home')
@@ -456,6 +475,66 @@ function App() {
 
 	const chipBgs = ['bg-card', 'bg-tertiary/25', 'bg-secondary/20', 'bg-quaternary/25']
 
+	const [blogPosts, setBlogPosts] = useState(DEFAULT_BLOG_POSTS)
+
+	useEffect(() => {
+		let isMounted = true
+
+		const fetchLivePosts = async () => {
+			try {
+				const response = await fetch('https://api.smabdullah.dev/api/v1/posts')
+				if (!response.ok) return
+				const data = await response.json()
+
+				if (data && Array.isArray(data.items) && data.items.length > 0 && isMounted) {
+					const fallbackImages = [
+						'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+						'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
+						'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80'
+					]
+
+					const liveFormatted = data.items.slice(0, 3).map((item, index) => {
+						const dateRaw = item.published_at || item.created_at || '2026-09-16'
+						const dateFormatted = dateRaw.split('T')[0]
+
+						let snippet = item.excerpt || item.subtitle || ''
+						if (!snippet && item.content) {
+							snippet =
+								item.content
+									.replace(/#+\s[^\n]+/g, '')
+									.replace(/!\[.*?\]\(.*?\)/g, '')
+									.replace(/---/g, '')
+									.replace(/[*_`]/g, '')
+									.trim()
+									.slice(0, 140) + '...'
+						}
+
+						return {
+							title: item.title,
+							date: dateFormatted,
+							excerpt: snippet,
+							url: item.slug
+								? `https://blog.smabdullah.dev/post/${item.slug}`
+								: 'https://blog.smabdullah.dev/',
+							image: item.cover_image || fallbackImages[index % fallbackImages.length]
+						}
+					})
+
+					// Display exactly what the API returns (up to max 3), no made-up posts
+					setBlogPosts(liveFormatted)
+				}
+			} catch (err) {
+				console.warn('Could not fetch live blog posts, using cache:', err)
+			}
+		}
+
+		fetchLivePosts()
+
+		return () => {
+			isMounted = false
+		}
+	}, [])
+
 	const achievements = ['Prompt Engineering Competition by AgentX — 8th Place']
 
 	const marqueeItems = [
@@ -478,6 +557,7 @@ function App() {
 	const navItems = [
 		['projects', 'Projects'],
 		['skills', 'Skills'],
+		['writing', 'Writing'],
 		['education', 'Education'],
 		['achievements', 'Achievements'],
 		['cv', 'CV'],
@@ -865,6 +945,84 @@ function App() {
 
 					<div className="flex justify-center py-2" aria-hidden="true">
 						<Squiggle className="h-3 w-32 text-tertiary" />
+					</div>
+
+					<section id="writing" className="reveal mt-16" data-reveal>
+						<div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+							<div className="flex flex-col items-start gap-2">
+								<span className="rounded-full border-2 border-foreground bg-quaternary px-3 py-1 font-heading text-xs font-bold uppercase tracking-widest text-foreground shadow-pop">
+									From the Blog
+								</span>
+								<h2 className="font-heading text-3xl font-extrabold md:text-4xl">
+									Latest Insights from My Blog
+								</h2>
+								<Squiggle className="text-accent" />
+							</div>
+
+							<a
+								href="https://blog.smabdullah.dev/"
+								target="_blank"
+								rel="noreferrer"
+								className="group inline-flex items-center gap-2 rounded-full border-2 border-foreground bg-card px-5 py-2.5 font-heading text-sm font-bold text-foreground shadow-pop transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-tertiary hover:shadow-pop-hover active:translate-x-0.5 active:translate-y-0.5 self-start sm:self-auto"
+							>
+								<span>View all posts</span>
+								<ArrowRight size={16} strokeWidth={2.5} className="transition-transform group-hover:translate-x-1" />
+							</a>
+						</div>
+
+						<div
+							className={`mt-10 grid gap-8 ${
+								blogPosts.length === 1
+									? 'max-w-md'
+									: blogPosts.length === 2
+										? 'md:grid-cols-2 max-w-4xl'
+										: 'md:grid-cols-3'
+							}`}
+						>
+							{blogPosts.map((post) => (
+								<article key={post.title} className="group flex flex-col justify-between">
+									<div>
+										<div className="relative overflow-hidden rounded-xl border-2 border-foreground bg-muted shadow-pop transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-pop-hover">
+											<img
+												src={post.image}
+												alt={post.title}
+												className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+												loading="lazy"
+											/>
+											<span className="absolute bottom-3 right-3 rounded-md border-2 border-foreground bg-card px-2.5 py-0.5 font-heading text-xs font-extrabold text-foreground shadow-sm">
+												{post.date}
+											</span>
+										</div>
+
+										<h3 className="mt-4 font-heading text-xl font-bold leading-snug transition-colors group-hover:text-accent">
+											<a href={post.url} target="_blank" rel="noreferrer">
+												{post.title}
+											</a>
+										</h3>
+
+										<p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+											{post.excerpt}
+										</p>
+									</div>
+
+									<div className="mt-4">
+										<a
+											href={post.url}
+											target="_blank"
+											rel="noreferrer"
+											className="inline-flex items-center gap-1.5 font-heading text-xs font-extrabold uppercase tracking-wider text-accent transition-all group-hover:gap-2.5 hover:text-accent/80"
+										>
+											<span>Read Article</span>
+											<ArrowRight size={14} strokeWidth={2.5} />
+										</a>
+									</div>
+								</article>
+							))}
+						</div>
+					</section>
+
+					<div className="flex justify-center py-2" aria-hidden="true">
+						<Squiggle className="h-3 w-32 text-secondary" />
 					</div>
 
 					<section id="education" className="reveal mt-10" data-reveal>
