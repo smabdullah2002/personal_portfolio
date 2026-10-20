@@ -5,6 +5,7 @@ import {
 	Code,
 	Database,
 	Download,
+	ExternalLink,
 	GitBranch,
 	GraduationCap,
 	HeartHandshake,
@@ -23,6 +24,18 @@ import {
 	Trophy
 } from 'lucide-react'
 import './App.css'
+
+function GithubIcon({ className = 'h-3.5 w-3.5' }) {
+	return (
+		<svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+			/>
+		</svg>
+	)
+}
 
 function Squiggle({ className = '' }) {
 	return (
@@ -327,8 +340,9 @@ function App() {
 	const projects = [
 		{
 			title: 'BehaviorIQ',
+			category: 'AI Microservice',
 			description:
-				'E-commerce platforms treat every visitor the same. Built a FastAPI microservice that scores live session intent (0–100) from browsing signals, predicts RFM-based churn, builds behavioral vectors for hybrid intent-aware search, and ships a RAG-powered AI assistant so owners can query their commerce data in plain English.',
+				'Real-time behavioral commerce intelligence engine. Engineered a FastAPI microservice scoring clickstream session intent (0–100) and RFM churn probabilities. Powers hybrid semantic search via Pinecone dense vectors with intent-aware reranking, paired with a natural language RAG assistant for merchant analytics.',
 			stack: ['FastAPI', 'Python', 'Pinecone', 'PostgreSQL'],
 			links: [{ label: 'GitHub', url: 'https://github.com/smabdullah2002/behavioriq-ml-service.git' }],
 			Icon: BrainCircuit,
@@ -338,8 +352,9 @@ function App() {
 		},
 		{
 			title: 'Ember',
+			category: 'Fullstack + NLP',
 			description:
-				'Full-stack AI mental health support platform integrating Hugging Face toxicity detection models with a React frontend and FastAPI backend. Supabase handles persistent user data and authentication.',
+				'AI-powered compassionate mental health companion platform. Integrated Hugging Face toxicity & sentiment classifiers with a FastAPI backend and React frontend. Leveraged Supabase for secure Auth and encrypted session persistence, delivering real-time empathetic conversational support.',
 			stack: ['React', 'FastAPI', 'Supabase', 'Hugging Face'],
 			links: [
 				{ label: 'Live', url: 'https://ember-mentalhealth-companion.netlify.app/' },
@@ -352,8 +367,9 @@ function App() {
 		},
 		{
 			title: 'Onkur',
+			category: 'AI Plant Care',
 			description:
-				'Personal plant-care application with AI-driven daily care routines, weather-based recommendations, and image-based plant health diagnostics via Plant.id API.',
+				'Intelligent botanical care companion with computer vision diagnostics. Combines Plant.id disease detection APIs with localized weather telemetry to generate dynamic hydration and care schedules. Features an automated reminder system and interactive plant health trackers.',
 			stack: ['React', 'FastAPI', 'AI/ML'],
 			links: [
 				{ label: 'Live', url: 'https://onkur.netlify.app/' },
@@ -366,8 +382,9 @@ function App() {
 		},
 		{
 			title: 'Universal Web Scraper & RAG Chatbot',
+			category: 'RAG + Crawling',
 			description:
-				'Production-grade web crawler using Crawlee + Playwright for dynamic site traversal and Trafilatura for clean extraction. Full RAG pipeline: LangChain chunking → sentence-transformers embeddings → Pinecone vector store → Gemini LLM generation. Handles arbitrary URLs with natural language querying.',
+				'End-to-end autonomous web intelligence & RAG pipeline. Traverses JavaScript-heavy SPAs via Crawlee + Playwright with Trafilatura clean content extraction. Feeds into a LangChain pipeline: chunking → sentence-transformers embeddings → Pinecone vector indexing → Gemini LLM grounded answer synthesis over arbitrary domains.',
 			stack: ['Crawlee', 'Playwright', 'LangChain', 'Gemini', 'Pinecone'],
 			links: [{ label: 'GitHub', url: 'https://github.com/smabdullah2002/ran_gpt' }],
 			Icon: Search,
@@ -377,8 +394,9 @@ function App() {
 		},
 		{
 			title: 'Personal Blog Platform',
+			category: 'Fullstack REST API',
 			description:
-				'Blog platform with full CRUD, user authentication, and a responsive UI. Designed and implemented the REST API and data layer end-to-end.',
+				'High-performance full-stack publishing platform. Architected scalable FastAPI REST endpoints with Supabase PostgreSQL, implementing row-level security (RLS), JWT authentication, markdown parsing, and an optimized relational schema for sub-millisecond query responses.',
 			stack: ['FastAPI', 'Supabase', 'REST API'],
 			links: [
 				{ label: 'Live', url: 'https://blog.smabdullah.dev/' },
@@ -705,44 +723,78 @@ function App() {
 						<div className="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
 							{projects.map((project, index) => (
 								<article
-									className={`reveal ${index % 2 === 0 ? 'reveal-left' : 'reveal-right'} relative rounded-md border-2 border-foreground bg-card p-6 pt-10 ${project.shadow} ${project.hoverShadow} transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-1 hover:scale-[1.02]`}
+									className={`reveal ${index % 2 === 0 ? 'reveal-left' : 'reveal-right'} relative flex flex-col justify-between rounded-xl border-2 border-foreground bg-card p-6 ${project.shadow} ${project.hoverShadow} transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:-rotate-1 hover:scale-[1.02]`}
 									data-reveal
 									style={{ '--delay': `${index * 90}ms` }}
 									key={project.title}
 								>
-									<span
-										className={`absolute -top-6 left-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-foreground ${project.iconBg}`}
-									>
-										<project.Icon size={22} strokeWidth={2.5} />
-									</span>
-									<h3 className="font-heading text-xl font-bold">{project.title}</h3>
-									<p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
-									<div className="mt-4 flex flex-wrap gap-1.5">
-										{project.stack.map((item) => (
-											<span
-												key={item}
-												className="rounded-full border-2 border-foreground bg-muted px-2.5 py-0.5 text-xs font-bold"
-											>
-												{item}
+									<div>
+										{/* Terminal / Browser Header Bar */}
+										<div className="mb-4 flex items-center justify-between border-b-2 border-foreground/10 pb-3">
+											<div className="flex items-center gap-1.5" aria-hidden="true">
+												<span className="h-2.5 w-2.5 rounded-full border border-foreground/30 bg-[#ff5f56]" />
+												<span className="h-2.5 w-2.5 rounded-full border border-foreground/30 bg-[#ffbd2e]" />
+												<span className="h-2.5 w-2.5 rounded-full border border-foreground/30 bg-[#27c93f]" />
+											</div>
+											<span className="rounded-full border-2 border-foreground bg-tertiary/40 px-2.5 py-0.5 font-heading text-[10px] font-extrabold uppercase tracking-wider text-foreground sm:text-[11px]">
+												{project.category}
 											</span>
-										))}
-									</div>
-									<div className="mt-5 flex flex-wrap gap-2">
-										{project.links.map((link, linkIndex) => (
-											<a
-												key={link.label}
-												href={link.url}
-												target="_blank"
-												rel="noreferrer"
-												className={`inline-flex min-h-9 items-center rounded-full border-2 border-foreground px-3.5 py-1 text-sm font-bold transition-colors duration-200 ${
-													linkIndex === 0
-														? 'bg-accent text-accent-foreground hover:bg-accent/85'
-														: 'bg-card text-foreground hover:bg-tertiary'
-												}`}
+										</div>
+
+										<div className="flex items-center gap-3">
+											<span
+												className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-foreground shadow-pop ${project.iconBg}`}
 											>
-												{link.label}
-											</a>
-										))}
+												<project.Icon size={20} strokeWidth={2.5} />
+											</span>
+											<h3 className="font-heading text-xl font-bold leading-tight">{project.title}</h3>
+										</div>
+
+										<p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+									</div>
+
+									<div className="mt-5">
+										<div className="flex flex-wrap gap-1.5 border-t-2 border-foreground/10 pt-3">
+											{project.stack.map((item) => (
+												<span
+													key={item}
+													className="rounded-full border-2 border-foreground bg-muted px-2.5 py-0.5 text-xs font-bold"
+												>
+													{item}
+												</span>
+											))}
+										</div>
+
+										<div className="mt-4 flex flex-wrap gap-2">
+											{project.links.map((link) => {
+												const isLive = link.label === 'Live'
+												return (
+													<a
+														key={link.label}
+														href={link.url}
+														target="_blank"
+														rel="noreferrer"
+														className={`inline-flex min-h-9 items-center gap-1.5 rounded-full border-2 border-foreground px-3.5 py-1 text-sm font-bold shadow-pop transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-pop-hover active:translate-x-0.5 active:translate-y-0.5 ${
+															isLive
+																? 'bg-accent text-accent-foreground hover:bg-accent/90'
+																: 'bg-card text-foreground hover:bg-tertiary'
+														}`}
+													>
+														{isLive ? (
+															<>
+																<span>Live Demo</span>
+																<ExternalLink size={13} strokeWidth={2.5} />
+															</>
+														) : (
+															<>
+																<GithubIcon className="h-3.5 w-3.5" />
+																<span>GitHub</span>
+															</>
+														)}
+													</a>
+												)
+											})}
+										</div>
 									</div>
 								</article>
 							))}
